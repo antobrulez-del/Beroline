@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BERNOLINE — Café & Restaurant</title>
+    <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap)" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FAF7F2;
+            --cream-dark: #F5F0E8;
+            --stone: #E8E2D9;
+            --stone-dark: #D4CCC0;
+            --espresso: #2C2420;
+            --espresso-light: #4A3F38;
+            --warm: #8B7355;
+            --warm-light: #A89070;
+            --gold: #C4A77D;
+            --gold-muted: #B8A080;
+            --text-primary: #1A1714;
+            --text-secondary: #5C544A;
+            --text-muted: #8A8279;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--cream);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-weight: 300;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Typography */
+        .font-serif {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+
+        /* Smooth Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.15s; }
+        .reveal-delay-2 { transition-delay: 0.3s; }
+        .reveal-delay-3 { transition-delay: 0.45s; }
+        .reveal-delay-4 { transition-delay: 0.6s; }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .nav.scrolled {
+            background: rgba(250, 247, 242, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1rem 4%;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+        }
+
+        .nav-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            color: var(--cream);
+            text-decoration: none;
+            transition: color 0.4s ease;
+        }
+
+        .nav.scrolled .nav-logo {
+            color: var(--espresso);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--cream);
+            text-decoration: none;
+            position: relative;
+            transition: color 0.4s ease;
+        }
+
+        .nav.scrolled .nav-links a {
+            color: var(--text-secondary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: currentColor;
+            transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.875rem 2rem;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.4);
+            color: var(--cream);
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .nav.scrolled .nav-cta {
+            border-color: var(--espresso);
+            color: var(--espresso);
+        }
+
+        .nav-cta:hover {
+            background: var(--cream);
+            color: var(--espresso);
+            border-color: var(--cream);
+        }
+
+        .nav.scrolled .nav-cta:hover {
+            background: var(--espresso);
+            color: var(--cream);
+        }
+
+        /* Mobile Menu */
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            width: 24px;
+            height: 1px;
+            background: var(--cream);
+            transition: all 0.4s ease;
+        }
+
+        .nav.scrolled .nav-toggle span {
+            background: var(--espresso);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-media {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+            transform: scale(1.05);
+            animation: heroZoom 20s ease-out forwards;
+        }
+
+        @keyframes heroZoom {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(26, 23, 20, 0.3) 0%,
+                rgba(26, 23, 20, 0.1) 40%,
+                rgba(26, 23, 20, 0.4) 100%
+            );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: var(--cream);
+            padding: 0 2rem;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 1.2s ease forwards 0.3s;
+        }
+
+        .hero-title {
+            font-size: clamp(3.5rem, 12vw, 9rem);
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            margin-bottom: 1.5rem;
+            line-height: 0.9;
+            opacity: 0;
+            animation: fadeUp 1.4s ease forwards 0.5s;
+        }
+
+        .hero-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            font-weight: 300;
+            font-style: italic;
+            letter-spacing: 0.05em;
+            max-width: 500px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeUp 1.4s ease forwards 0.7s;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 1.4s ease forwards 0.9s;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 1.125rem 2.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--cream);
+            color: var(--espresso);
+        }
+
+        .btn-primary:hover {
+            background: var(--espresso);
+            color: var(--cream);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--cream);
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--cream);
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--cream);
+            opacity: 0;
+            animation: fadeUp 1.4s ease forwards 1.2s;
+        }
+
+        .hero-scroll span {
+            font-size: 0.6rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, var(--cream), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Section Styling */
+        section {
+            padding: 8rem 4%;
+        }
+
+        .section-large {
+            padding: 10rem 4%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .container-narrow {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Social Proof Section */
+        .social-proof {
+            background: var(--cream-dark);
+            text-align: center;
+        }
+
+        .social-proof-header {
+            margin-bottom: 5rem;
+        }
+
+        .social-proof-badge {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--warm);
+            margin-bottom: 1.5rem;
+        }
+
+        .social-proof-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            color: var(--espresso);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+        }
+
+        .testimonial-card {
+            padding: 3rem 2rem;
+            background: var(--cream);
+            border-radius: 2px;
+            text-align: left;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+        }
+
+        .testimonial-stars {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .star {
+            color: var(--gold);
+            font-size: 0.875rem;
+        }
+
+        .testimonial-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            line-height: 1.7;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
+        .testimonial-author {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .testimonial-source {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Experience Section */
+        .experience {
+            background: var(--cream);
+        }
+
+        .experience-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .experience-content {
+            padding-right: 2rem;
+        }
+
+        .section-badge {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--warm);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            line-height: 1.15;
+            color: var(--espresso);
+            margin-bottom: 2rem;
+        }
+
+        .section-text {
+            font-size: 1rem;
+            line-height: 1.9;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-text-large {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            font-style: italic;
+            line-height: 1.7;
+            color: var(--text-primary);
+        }
+
+        .experience-image-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .experience-image {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .experience-image-wrapper:hover .experience-image {
+            transform: scale(1.03);
+        }
+
+        .image-overlay-text {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            right: 2rem;
+            padding: 1.5rem 2rem;
+            background: rgba(250, 247, 242, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .image-overlay-text p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--espresso);
+        }
+
+        /* Moments Section */
+        .moments {
+            background: var(--espresso);
+            color: var(--cream);
+        }
+
+        .moments-header {
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .moments-badge {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .moments-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            color: var(--cream);
+        }
+
+        .moments-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .moment-card {
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .moment-card:hover {
+            background: rgba(255,255,255,0.03);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-5px);
+        }
+
+        .moment-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .moment-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .moment-desc {
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: rgba(250, 247, 242, 0.7);
+        }
+
+        /* Atmosphere Section */
+        .atmosphere {
+            background: var(--cream);
+            padding: 0;
+        }
+
+        .atmosphere-full {
+            position: relative;
+            height: 80vh;
+            min-height: 600px;
+            overflow: hidden;
+        }
+
+        .atmosphere-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .atmosphere-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to right,
+                rgba(26, 23, 20, 0.7) 0%,
+                rgba(26, 23, 20, 0.3) 50%,
+                transparent 100%
+            );
+            display: flex;
+            align-items: center;
+        }
+
+        .atmosphere-content {
+            padding: 4rem 6%;
+            max-width: 550px;
+            color: var(--cream);
+        }
+
+        .atmosphere-content .section-badge {
+            color: var(--gold);
+        }
+
+        .atmosphere-content .section-title {
+            color: var(--cream);
+            margin-bottom: 1.5rem;
+        }
+
+        .atmosphere-content .section-text {
+            color: rgba(250, 247, 242, 0.85);
+            font-size: 1.1rem;
+        }
+
+        /* Why Section */
+        .why {
+            background: var(--stone);
+        }
+
+        .why-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2rem;
+        }
+
+        .why-item {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            background: var(--cream);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .why-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+        }
+
+        .why-icon {
+            font-size: 1.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .why-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--espresso);
+            margin-bottom: 0.75rem;
+        }
+
+        .why-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--espresso) 0%, var(--espresso-light) 100%);
+            text-align: center;
+            color: var(--cream);
+            padding: 10rem 4%;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-badge {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2rem;
+        }
+
+        .cta-title {
+            font-size: clamp(3rem, 7vw, 5rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .cta-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            font-style: italic;
+            opacity: 0.85;
+            margin-bottom: 3rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta .btn-primary {
+            background: var(--cream);
+            color: var(--espresso);
+        }
+
+        .cta .btn-primary:hover {
+            background: var(--gold);
+            color: var(--espresso);
+        }
+
+        .cta .btn-secondary {
+            border-color: rgba(250, 247, 242, 0.4);
+            color: var(--cream);
+        }
+
+        .cta .btn-secondary:hover {
+            background: rgba(250, 247, 242, 0.1);
+            border-color: var(--cream);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-primary);
+            color: var(--cream);
+            padding: 6rem 4% 3rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 5rem;
+        }
+
+        .footer-brand {
+            padding-right: 2rem;
+        }
+
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            opacity: 0.7;
+            line-height: 1.7;
+        }
+
+        .footer-section h4 {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: rgba(250, 247, 242, 0.8);
+            text-decoration: none;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--gold);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(250, 247, 242, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .footer-bottom {
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+
+        .footer-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        .footer-rating .stars {
+            color: var(--gold);
+        }
+
+        /* Sticky Reserve Button */
+        .sticky-reserve {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+        }
+
+        .sticky-reserve.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .sticky-reserve .btn {
+            background: var(--espresso);
+            color: var(--cream);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 1rem 2rem;
+        }
+
+        .sticky-reserve .btn:hover {
+            background: var(--warm);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1200px) {
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .moments-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .why-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .nav-toggle {
+                display: flex;
+            }
+            
+            .experience-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .experience-content {
+                padding-right: 0;
+                order: 2;
+            }
+            
+            .experience-image-wrapper {
+                order: 1;
+            }
+            
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .why-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            section {
+                padding: 5rem 5%;
+            }
+            
+            .section-large {
+                padding: 6rem 5%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-title {
+                letter-spacing: 0.15em;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+                padding: 0 1rem;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .moments-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .atmosphere-content {
+                padding: 3rem 5%;
+            }
+            
+            .sticky-reserve {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+            }
+            
+            .sticky-reserve .btn {
+                width: 100%;
+            }
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background: var(--espresso);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            letter-spacing: 0.3em;
+            color: var(--cream);
+            animation: preloaderPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes preloaderPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-text">BERNOLINE</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <a href="#" class="nav-logo">BERNOLINE</a>
+        <ul class="nav-links">
+            <li><a href="#experience">L'Expérience</a></li>
+            <li><a href="#moments">Nos Moments</a></li>
+            <li><a href="#atmosphere">L'Atmosphère</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="nav-cta">Réserver</button>
+        <div class="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-media">
+            <img 
+                src="[images.unsplash.com](https://images.unsplash.com/photo-1559925393-8be0ec4767c8?q=80&w=2071&auto=format&fit=crop)" 
+                alt="Intérieur élégant de Bernoline" 
+                class="hero-image"
+            >
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <p class="hero-badge">Café · Restaurant · Destination</p>
+            <h1 class="hero-title font-serif">BERNOLINE</h1>
+            <p class="hero-subtitle">Un lieu pour ralentir, savourer<br>et se sentir accueilli.</p>
+            <div class="hero-buttons">
+                <a href="#reserve" class="btn btn-primary">
+                    Réserver une table
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="#experience" class="btn btn-secondary">Découvrir l'expérience</a>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <span>Défiler</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Social Proof Section -->
+    <section class="social-proof section-large">
+        <div class="container">
+            <div class="social-proof-header reveal">
+                <p class="social-proof-badge">Ce qu'ils en disent</p>
+                <h2 class="social-proof-title font-serif">Des moments qui marquent</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal reveal-delay-1">
+                    <div class="testimonial-stars">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="testimonial-quote">« Un bel endroit plein de charme, plats délicieux et abordables. Équipe super sympa. »</p>
+                    <p class="testimonial-author">Xav C.</p>
+                    <div class="testimonial-source">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                        </svg>
+                        Google Reviews
+                    </div>
+                </div>
+                <div class="testimonial-card reveal reveal-delay-2">
+                    <div class="testimonial-stars">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="testimonial-quote">« Très belle découverte. Plats originaux, copieux, ultra frais et parfaitement assaisonnés. Accueil au top. »</p>
+                    <p class="testimonial-author">Cyrielle Martin</p>
+                    <div class="testimonial-source">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                        </svg>
+                        Google Reviews
+                    </div>
+                </div>
+                <div class="testimonial-card reveal reveal-delay-3">
+                    <div class="testimonial-stars">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="testimonial-quote">« Flat white + cookie excellents. Atmosphère agréable et personnes chaleureuses. »</p>
+                    <p class="testimonial-author">William Linstrumelle</p>
+                    <div class="testimonial-source">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                        </svg>
+                        Google Reviews
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="experience section-large" id="experience">
+        <div class="container">
+            <div class="experience-grid">
+                <div class="experience-content">
+                    <p class="section-badge reveal">L'Expérience Bernoline</p>
+                    <h2 class="section-title font-serif reveal reveal-delay-1">
+                        Ici, chaque détail<br>a du sens.
+                    </h2>
+                    <p class="section-text-large reveal reveal-delay-2">
+                        Un lieu où le temps suspend son cours. Où le café devient rituel. 
+                        Où chaque assiette raconte une histoire de fraîcheur et de générosité.
+                    </p>
+                    <p class="section-text reveal reveal-delay-3">
+                        Bernoline n'est pas simplement un café, ni seulement un restaurant. 
+                        C'est l'endroit où l'on revient naturellement, comme chez soi — 
+                        mais en mieux. Une atmosphère qui vous accueille, une équipe qui 
+                        vous connaît, des saveurs qui vous surprennent.
+                    </p>
+                    <p class="section-text reveal reveal-delay-4">
+                        Chaque produit est sélectionné avec soin. Chaque plat est préparé 
+                        avec intention. Chaque moment est conçu pour être savouré.
+                    </p>
+                </div>
+                <div class="experience-image-wrapper reveal">
+                    <img 
+                        src="[images.unsplash.com](https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop)" 
+                        alt="Café artisanal chez Bernoline" 
+                        class="experience-image"
+                    >
+                    <div class="image-overlay-text">
+                        <p>« Le luxe, c'est l'attention aux petites choses. »</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Moments Section -->
+    <section class="moments section-large" id="moments">
+        <div class="container">
+            <div class="moments-header">
+                <p class="moments-badge reveal">Moments Signature</p>
+                <h2 class="moments-title font-serif reveal reveal-delay-1">Des expériences, pas des produits.</h2>
+            </div>
+            <div class="moments-grid">
+                <div class="moment-card reveal reveal-delay-1">
+                    <div class="moment-icon">☕</div>
+                    <h3 class="moment-title">Le Rituel du Café</h3>
+                    <p class="moment-desc">Un flat white parfait, des grains sélectionnés avec soin, un moment de pause qui vous appartient.</p>
+                </div>
+                <div class="moment-card reveal reveal-delay-2">
+                    <div class="moment-icon">🍃</div>
+                    <h3 class="moment-title">Assiettes Vivantes</h3>
+                    <p class="moment-desc">Des produits ultra frais, des saveurs audacieuses, des portions généreuses qui honorent la saison.</p>
+                </div>
+                <div class="moment-card reveal reveal-delay-3">
+                    <div class="moment-icon">🥐</div>
+                    <h3 class="moment-title">Douceurs Maison</h3>
+                    <p class="moment-desc">Pâtisseries préparées chaque matin, cookies fondants, créations sucrées qui font sourire.</p>
+                </div>
+                <div class="moment-card reveal reveal-delay-4">
+                    <div class="moment-icon">✨</div>
+                    <h3 class="moment-title">Instants Partagés</h3>
+                    <p class="moment-desc">Une table entre amis, une conversation qui s'étire, des souvenirs qui se créent.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Atmosphere Section -->
+    <section class="atmosphere" id="atmosphere">
+        <div class="atmosphere-full">
+            <img 
+                src="[images.unsplash.com](https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047&auto=format&fit=crop)" 
+                alt="L'atmosphère chaleureuse de Bernoline" 
+                class="atmosphere-image"
+            >
+            <div class="atmosphere-overlay">
+                <div class="atmosphere-content">
+                    <p class="section-badge reveal">L'Atmosphère</p>
+                    <h2 class="section-title font-serif reveal reveal-delay-1">
+                        Un lieu qui<br>vous ressemble.
+                    </h2>
+                    <p class="section-text reveal reveal-delay-2">
+                        Des visages souriants, une lumière douce, le murmure des conversations. 
+                        Ici, les inconnus deviennent habitués, et les habitués deviennent amis. 
+                        C'est un endroit où l'on se sent bien, tout simplement.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Section -->
+    <section class="why section-large">
+        <div class="container">
+            <div class="why-header">
+                <p class="section-badge reveal">Pourquoi Bernoline</p>
+                <h2 class="section-title font-serif reveal reveal-delay-1">Ce qui fait la différence.</h2>
+            </div>
+            <div class="why-grid">
+                <div class="why-item reveal reveal-delay-1">
+                    <div class="why-icon">🌿</div>
+                    <h4 class="why-title">Ultra Frais</h4>
+                    <p class="why-desc">Produits sélectionnés chaque jour</p>
+                </div>
+                <div class="why-item reveal reveal-delay-2">
+                    <div class="why-icon">🍽</div>
+                    <h4 class="why-title">Généreux</h4>
+                    <p class="why-desc">Des portions qui vous comblent</p>
+                </div>
+                <div class="why-item reveal reveal-delay-3">
+                    <div class="why-icon">💫</div>
+                    <h4 class="why-title">Original</h4>
+                    <p class="why-desc">Des créations qui surprennent</p>
+                </div>
+                <div class="why-item reveal reveal-delay-4">
+                    <div class="why-icon">🤗</div>
+                    <h4 class="why-title">Chaleureux</h4>
+                    <p class="why-desc">Un accueil qui fait la différence</p>
+                </div>
+                <div class="why-item reveal reveal-delay-4">
+                    <div class="why-icon">✨</div>
+                    <h4 class="why-title">Accessible</h4>
+                    <p class="why-desc">L'excellence sans prétention</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="reserve">
+        <div class="cta-content">
+            <p class="cta-badge reveal">Votre moment vous attend</p>
+            <h2 class="cta-title font-serif reveal reveal-delay-1">Votre table<br>vous attend.</h2>
+            <p class="cta-subtitle reveal reveal-delay-2">Rejoignez-nous pour un moment qui compte.</p>
+            <div class="cta-buttons reveal reveal-delay-3">
+                <a href="#" class="btn btn-primary">
+                    Réserver maintenant
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="#contact" class="btn btn-secondary">Nous rendre visite</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">BERNOLINE</h3>
+                    <p class="footer-tagline">
+                        Un lieu pour ralentir, savourer<br>
+                        et se sentir accueilli.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Nous trouver</h4>
+                    <p>12 Rue de l'Exemple</p>
+                    <p>75011 Paris</p>
+                    <p>France</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Horaires</h4>
+                    <p>Mardi – Vendredi</p>
+                    <p>8h30 – 18h00</p>
+                    <p style="margin-top: 0.5rem;">Samedi – Dimanche</p>
+                    <p>9h00 – 19h00</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <a href="mailto:hello@bernoline.fr">hello@bernoline.fr</a>
+                    <a href="tel:+33123456789">01 23 45 67 89</a>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Bernoline. Tous droits réservés.</p>
+                <div class="footer-rating">
+                    <span class="stars">★★★★★</span>
+                    <span>5.0 sur Google</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sticky Reserve Button -->
+    <div class="sticky-reserve" id="stickyReserve">
+        <a href="#reserve" class="btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            Réserver
+        </a>
+    </div>
+
+    <script>
+        // Preloader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+            }, 800);
+        });
+
+        // Navigation scroll effect
+        const nav = document.getElementById('nav');
+        const stickyReserve = document.getElementById('stickyReserve');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+
+            if (window.scrollY > 600) {
+                stickyReserve.classList.add('visible');
+            } else {
+                stickyReserve.classList.remove('visible');
+            }
+        });
+
+        // Scroll reveal animation
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealOnScroll = () => {
+            revealElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
